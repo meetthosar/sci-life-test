@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('prefix', 5)->nullable();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('email')->unique();
+            $table->string('email');//->unique();
             $table->boolean('active')->default(0);
             $table->softDeletes();
             $table->timestamps();
