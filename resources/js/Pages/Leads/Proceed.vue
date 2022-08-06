@@ -11,7 +11,8 @@ defineProps({
     rowNumber : Number,
     totalRows : Number,
     previousRecords : Number,
-    newRecords: Number
+    newRecords: Number,
+    hideProceedButton : false
 });
 
 const form = useForm({
@@ -25,8 +26,9 @@ function submit() {
     form.post(`/leads/proceed`)
 }
 
-Echo.private(`import.1`)
+Echo.private(`import.${usePage().props.value.user.id}`)
     .listen('NotifyRecordImportStatus', (e) => {
+        usePage().props.value.hideProceedButton = true
         usePage().props.value.rowNumber = e.rowNumber
         usePage().props.value.totalRows = e.totalRows
         usePage().props.value.previousRecords = e.previousRecords
@@ -55,6 +57,7 @@ Echo.private(`import.1`)
                             </div>
                         </div>
                         <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
+                            <input type="hidden" v-model="form.erroredRecords"/>
                             <p>Total errored Rows : {{ erroredRecords }}</p>
                         </div>
                         <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
@@ -71,11 +74,11 @@ Echo.private(`import.1`)
                             <p>New Total Rows : {{ newRecords }}</p>
                         </div>
                         <div class="px-8 py-4 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
-                            <button class="finline-flex items-center px-4 py-2
+                            <button v-if="!hideProceedButton"  class="finline-flex items-center px-4 py-2
                             bg-green-800 border border-transparent rounded-md font-semibold text-xs
                             text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-900
                             focus:outline-none focus:border-green-900 focus:ring
-                            focus:ring-green-300 disabled:opacity-25 transition" type="submit">Proceed and Import</button>
+                            focus:ring-green-300 disabled:opacity-25 transition"  type="submit">Proceed and Import</button>
 
                             <a :href="route('leads.index')">Abort</a>
                         </div>

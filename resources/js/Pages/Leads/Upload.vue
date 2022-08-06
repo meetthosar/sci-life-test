@@ -19,7 +19,7 @@ function submit() {
     form.post(`/leads/import`)
 }
 
-Echo.private(`validation.1`)
+Echo.private(`validation.${usePage().props.value.user.id}`)
     .listen('NotifyRecordValidationStatus', (e) => {
         console.log(e);
     });
