@@ -34,7 +34,7 @@ class LeadController extends Controller
         $document = $request->file('upload_file')->store('csv');
 
         try {
-            Excel::import(new LeadImportValidation(), $document);
+            Excel::import(new LeadImportValidation(auth()->user()), $document);
         } catch (\Exception $exception) {
             $this->erroredRecords = count($exception->errors());
         }
@@ -45,10 +45,11 @@ class LeadController extends Controller
 
     public function proceed(Request $request){
 
-       (new LeadsImport(auth()->user(), 10))->import($request->input('upload_file'), 'local', \Maatwebsite\Excel\Excel::CSV);
+
+       (new LeadsImport(auth()->user(), 10, Lead::count()))->import($request->input('upload_file'), 'local', \Maatwebsite\Excel\Excel::CSV);
 
 
-        return Inertia::render('Leads/Upload',['success' => 'All good!']);
+        return Inertia::render('Leads/Proceed',['success' => 'All good!']);
 //        return redirect('/')->with('success', 'All good!');
     }
 

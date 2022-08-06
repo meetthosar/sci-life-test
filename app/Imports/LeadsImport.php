@@ -28,7 +28,8 @@ class LeadsImport implements ToModel, WithValidation, WithHeadingRow, ShouldQueu
 {
     use Importable, RegistersEventListeners, RemembersRowNumber;
 
-    public function __construct(public User $user, public int $totalRows){}
+    public $newRecords = 0;
+    public function __construct(public User $user, public int $totalRows, public $previousRecords){}
 
     /**
     * @param array $row
@@ -43,9 +44,9 @@ class LeadsImport implements ToModel, WithValidation, WithHeadingRow, ShouldQueu
             'first_name' => $row['first_name'],
             'last_name' => $row['last_name'],
             'email' => $row['email'],
-//            'active' => 1
+            'active' => 1
         ]);
-        dispatch(new DispatchImportBroadcast($this->user->id, $this->getRowNumber(), $this->totalRows));
+        dispatch(new DispatchImportBroadcast($this->user->id, $this->getRowNumber(), $this->totalRows, $this->previousRecords, Lead::count()));
         return $lead;
     }
 

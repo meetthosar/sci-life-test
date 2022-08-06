@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,4 +42,39 @@ Route::middleware([
     });
 
 });
+
+Route::get('/categories', function (){
+
+
+     $sql = "WITH RECURSIVE tree_view AS (
+    SELECT category_id, name, parent,
+           1 AS level,
+           concat(category_id) as order_sequence
+
+    FROM category
+    WHERE category.parent IS NULL
+
+    UNION ALL
+
+    SELECT parent.category_id,
+           parent.name,
+           parent.parent,
+           level + 1 AS level,
+            concat(order_sequence,'_',parent.category_id) as order_sequence
+
+    FROM category parent
+    JOIN tree_view tv
+    ON parent.parent = tv.category_id
+)
+SELECT
+        name, parent, level, order_sequence
+FROM tree_view";
+
+     $result = DB::getPdo()->prepare($sql);
+     $result->execute();
+
+     $categories = $result->fetchAll();
+
+     return Inertia::render('Categories',['categories' => $categories]);
+})->name('categories');
 

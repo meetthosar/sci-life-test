@@ -19,7 +19,11 @@ class DispatchImportBroadcast implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(public int $userId, public int $rowNumber, public int $totalRows)
+    public function __construct(public int $userId,
+                                public int $rowNumber,
+                                public int $totalRows,
+                                public int $previousRecords,
+                                public int $newRecords)
     {
         //
     }
@@ -31,6 +35,10 @@ class DispatchImportBroadcast implements ShouldQueue
      */
     public function handle()
     {
-        NotifyRecordImportStatus::dispatch($this->userId, $this->rowNumber, $this->totalRows);
+        NotifyRecordImportStatus::dispatch($this->userId,
+            $this->rowNumber,
+            $this->totalRows,
+            $this->previousRecords,
+            $this->newRecords);
     }
 }

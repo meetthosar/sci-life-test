@@ -19,7 +19,11 @@ class NotifyRecordImportStatus implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(public int $userId, public int $rowNumber,public int $totalRows)
+    public function __construct(public int $userId,
+                                public int $rowNumber,
+                                public int $totalRows,
+                                public int $previousRecords,
+                                public int $newRecords)
     {
         //
     }

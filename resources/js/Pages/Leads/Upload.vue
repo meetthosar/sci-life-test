@@ -52,12 +52,13 @@ Echo.private(`validation.1`)
                         </div>
                         <div v-if="!showProceedBox" class="px-8 py-4 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
 
-                            <button class="flex items-center btn-indigo" type="submit">Upload Leads</button>
+                            <button class="finline-flex items-center px-4 py-2
+                            bg-gray-800 border border-transparent rounded-md font-semibold text-xs
+                            text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900
+                            focus:outline-none focus:border-gray-900 focus:ring
+                            focus:ring-gray-300 disabled:opacity-25 transition" type="submit">Upload Leads</button>
                         </div>
-                        <div  v-if="showProceedBox" class="px-8 py-4 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
-                            <input type="hidden" :value="form.proceed">
-                            <button class="flex items-center btn-indigo" type="submit">Proceed and Import</button>
-                        </div>
+
                     </form>
                 </div>
             </div>
