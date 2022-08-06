@@ -39,6 +39,7 @@ Route::middleware([
         Route::get('/import', [\App\Http\Controllers\LeadController::class, 'upload'])->name('leads.upload');
         Route::post('/import', [\App\Http\Controllers\LeadController::class, 'import'])->name('leads.import');
         Route::post('/proceed', [\App\Http\Controllers\LeadController::class, 'proceed'])->name('leads.proceed');
+        Route::get('/proceed', [\App\Http\Controllers\LeadController::class, 'index'])->name('leads.proceed.refresh');
     });
 
 });

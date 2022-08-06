@@ -1,6 +1,10 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Link } from '@inertiajs/inertia-vue3'
+
+defineProps({
+    leads : Object
+})
 </script>
 
 <template>
@@ -15,7 +19,11 @@ import { Link } from '@inertiajs/inertia-vue3'
             <div><!----> <!----></div>
             <div>
                 <div class="mb-6 flex justify-between items-center">
-                    <Link :href="route('leads.upload')" class="btn-indigo">
+                    <Link :href="route('leads.upload')" class="finline-flex items-center px-4 py-2
+                            bg-gray-800 border border-transparent rounded-md font-semibold text-xs
+                            text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900
+                            focus:outline-none focus:border-gray-900 focus:ring
+                            focus:ring-gray-300 disabled:opacity-25 transition">
                         <span>Import</span></Link>
                 </div>
 
@@ -24,32 +32,13 @@ import { Link } from '@inertiajs/inertia-vue3'
                         <tr class="text-left font-bold">
                             <th class="px-6 pt-6 pb-4">Name</th>
                             <th class="px-6 pt-6 pb-4">Email</th>
-                            <th colspan="2" class="px-6 pt-6 pb-4">Active</th>
+                            <th class="px-6 pt-6 pb-4">Active</th>
                         </tr>
-                        <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                            <td class="border-t"><a href="https://demo.inertiajs.com/organizations/70/edit"
-                                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                Altenwerth and Sons
-                                <!----></a></td>
-                            <td class="border-t"><a tabindex="-1"
-                                                    href="https://demo.inertiajs.com/organizations/70/edit"
-                                                    class="px-6 py-4 flex items-center">
-                                Marianneside
-                            </a></td>
-                            <td class="border-t"><a tabindex="-1"
-                                                    href="https://demo.inertiajs.com/organizations/70/edit"
-                                                    class="px-6 py-4 flex items-center">
-                                800-893-0529
-                            </a></td>
-                            <td class="border-t w-px"><a tabindex="-1"
-                                                         href="https://demo.inertiajs.com/organizations/70/edit"
-                                                         class="px-4 flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                     class="block w-6 h-6 fill-gray-400">
-                                    <polygon
-                                        points="12.95 10.707 13.657 10 8 4.343 6.586 5.757 10.828 10 6.586 14.243 8 15.657 12.95 10.707"></polygon>
-                                </svg>
-                            </a></td>
+                        <tr v-for="lead in leads" class="hover:bg-gray-100 focus-within:bg-gray-100">
+                            <td class="border-t">{{ lead.first_name }}{{ lead.last_name }}</td>
+                            <td class="border-t">{{ lead.email }}</td>
+                            <td class="border-t">{{ lead.active }}</td>
+
                         </tr>
                     </table>
                 </div>

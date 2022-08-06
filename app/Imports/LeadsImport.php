@@ -18,9 +18,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Events\BeforeImport;
 use Maatwebsite\Excel\Validators\Failure;
 
@@ -46,7 +44,7 @@ class LeadsImport implements ToModel, WithValidation, WithHeadingRow, ShouldQueu
             'email' => $row['email'],
             'active' => 1
         ]);
-        dispatch(new DispatchImportBroadcast($this->user->id, $this->getRowNumber(), $this->totalRows, $this->previousRecords, Lead::count()));
+        dispatch(new DispatchImportBroadcast($this->user->id, $this->getRowNumber(), $this->totalRows, $this->previousRecords, Lead::count()+1));
         return $lead;
     }
 

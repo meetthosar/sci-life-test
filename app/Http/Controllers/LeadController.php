@@ -45,12 +45,10 @@ class LeadController extends Controller
 
     public function proceed(Request $request){
 
-
        (new LeadsImport(auth()->user(), 10, Lead::count()))->import($request->input('upload_file'), 'local', \Maatwebsite\Excel\Excel::CSV);
 
+       return Inertia::render('Leads/Proceed',['success' => 'All good!', 'upload_file' => $request->input('upload_file'), 'erroredRecords' => $this->erroredRecords]);
 
-        return Inertia::render('Leads/Proceed',['success' => 'All good!']);
-//        return redirect('/')->with('success', 'All good!');
     }
 
 

@@ -7,11 +7,17 @@ import { Inertia } from '@inertiajs/inertia'
 defineProps({
     errors : Object,
     upload_file : String,
-    erroredRecords : Number
+    erroredRecords : Number,
+    rowNumber : Number,
+    totalRows : Number,
+    previousRecords : Number,
+    newRecords: Number
 });
 
 const form = useForm({
     upload_file : usePage().props.value.upload_file,
+    erroredRecords : usePage().props.value.erroredRecords,
+    totalRows : usePage().props.value.totalRows,
 })
 
 
@@ -21,7 +27,10 @@ function submit() {
 
 Echo.private(`import.1`)
     .listen('NotifyRecordImportStatus', (e) => {
-        console.log(e);
+        usePage().props.value.rowNumber = e.rowNumber
+        usePage().props.value.totalRows = e.totalRows
+        usePage().props.value.previousRecords = e.previousRecords
+        usePage().props.value.newRecords = e.newRecords
     });
 
 
@@ -45,16 +54,32 @@ Echo.private(`import.1`)
                                 {{ upload_file }}
                             </div>
                         </div>
+                        <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
+                            <p>Total errored Rows : {{ erroredRecords }}</p>
+                        </div>
+                        <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
+                            <input type="hidden" v-model="totalRows"/>
+                            <p>Total Rows : {{ totalRows }}</p>
+                        </div>
+                        <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
+                            <p>Importing Row number : {{ rowNumber }}</p>
+                        </div>
+                        <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
+                            <p>Previous Rows : {{ previousRecords }}</p>
+                        </div>
+                        <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
+                            <p>New Total Rows : {{ newRecords }}</p>
+                        </div>
                         <div class="px-8 py-4 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
                             <button class="finline-flex items-center px-4 py-2
-                            bg-gray-800 border border-transparent rounded-md font-semibold text-xs
-                            text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900
-                            focus:outline-none focus:border-gray-900 focus:ring
-                            focus:ring-gray-300 disabled:opacity-25 transition" type="submit">Proceed and Import</button>
+                            bg-green-800 border border-transparent rounded-md font-semibold text-xs
+                            text-white uppercase tracking-widest hover:bg-green-700 active:bg-green-900
+                            focus:outline-none focus:border-green-900 focus:ring
+                            focus:ring-green-300 disabled:opacity-25 transition" type="submit">Proceed and Import</button>
+
+                            <a :href="route('leads.index')">Abort</a>
                         </div>
-                        <div class="px-8 py-4 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
-<!--                            <Link :href="/leads">Abort</Link>-->
-                        </div>
+
 
                     </form>
                 </div>
